@@ -35,87 +35,28 @@ along with Damn Vulnerable Web Application (DVWA).  If not, see <https://www.gnu
 
 - - -
 
-## Internationalisation
+### Quick install ###
+apt-get update && apt-get -y install apache2 php php-mysqli php-gd libapache2-mod-php ca-certificates curl gnupg lsb-release
+curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo gpg --dearmor -o /usr/share/keyrings/docker-archive-keyring.gpg
+echo \
+  "deb [arch=$(dpkg --print-architecture) signed-by=/usr/share/keyrings/docker-archive-keyring.gpg] https://download.docker.com/linux/ubuntu \
+  $(lsb_release -cs) stable" | sudo tee /etc/apt/sources.list.d/docker.list > /dev/null
 
-This file is available in multiple languages:
+apt-get update
+apt-get -y install docker-ce docker-ce-cli containerd.io
 
-- Chinese: [简体中文](README.zh.md)
-- Turkish: [Türkçe](README.tr.md)
+##Run mariaDB docker container:
 
-If you would like to contribute a translation, please submit a PR. Note though, this does not mean just run it through Google Translate and send that in, those will be rejected.
+docker run -itd --rm --name dvwadb -e MARIADB_DATABASE=dvwa -e MARIADB_USER=dvwa -e MARIADB_PASSWORD=p@ssw0rd -e MARIADB_ROOT_PASSWORD=p@ssw0rd -v "dvwadb-data:/var/lib/mysql" -p 3306:3306 mariadb:latest
 
-- - -
+##Deploy app to apache web server:
 
-## Download
+git clone https://github.com/djnixy/DVWA
+rm -r /var/www/html/index.html
+rsync -avP DVWA/ /var/www/html/
 
-While there are various versions of DVWA around, the only supported version is the latest source from the official GitHub repository. You can either clone it from the repo:
+###
 
-```
-git clone https://github.com/digininja/DVWA.git
-```
-
-Or [download a ZIP of the files](https://github.com/digininja/DVWA/archive/master.zip).
-
-- - -
-
-## Installation
-
-**Please make sure your config/config.inc.php file exists. Only having a config.inc.php.dist will not be sufficient and you'll have to edit it to suit your environment and rename it to config.inc.php. [Windows may hide the trailing extension.](https://www.howtogeek.com/205086/beginner-how-to-make-windows-show-file-extensions/)**
-
-### Installation Videos
-
-- [Installing Damn Vulnerable Web Application (DVWA) on Windows 10](https://www.youtube.com/watch?v=cak2lQvBRAo) [12:39 minutes]
-
-### Windows + XAMPP
-
-The easiest way to install DVWA is to download and install [XAMPP](https://www.apachefriends.org/en/xampp.html) if you do not already have a web server setup.
-
-XAMPP is a very easy to install Apache Distribution for Linux, Solaris, Windows and Mac OS X. The package includes the Apache web server, MySQL, PHP, Perl, a FTP server and phpMyAdmin.
-
-XAMPP can be downloaded from:
-<https://www.apachefriends.org/en/xampp.html>
-
-Simply unzip dvwa.zip, place the unzipped files in your public html folder, then point your browser to: `http://127.0.0.1/dvwa/setup.php`
-
-### Linux Packages
-
-If you are using a Debian based Linux distribution, you will need to install the following packages _(or their equivalent)_:
-
-`apt-get -y install apache2 mariadb-server php php-mysqli php-gd libapache2-mod-php`
-
-The site will work with MySQL instead of MariaDB but we strongly recommend MariaDB as it works out of the box whereas you have to make changes to get MySQL to work correctly.
-
-### Database Setup
-
-To set up the database, simply click on the `Setup DVWA` button in the main menu, then click on the `Create / Reset Database` button. This will create / reset the database for you with some data in.
-
-If you receive an error while trying to create your database, make sure your database credentials are correct within `./config/config.inc.php`. *This differs from config.inc.php.dist, which is an example file.*
-
-The variables are set to the following by default:
-
-```php
-$_DVWA[ 'db_server'] = '127.0.0.1';
-$_DVWA[ 'db_port'] = '3306';
-$_DVWA[ 'db_user' ] = 'dvwa';
-$_DVWA[ 'db_password' ] = 'p@ssw0rd';
-$_DVWA[ 'db_database' ] = 'dvwa';
-```
-
-Note, if you are using MariaDB rather than MySQL (MariaDB is default in Kali), then you can't use the database root user, you must create a new database user. To do this, connect to the database as the root user then use the following commands:
-
-```mysql
-mysql> create database dvwa;
-Query OK, 1 row affected (0.00 sec)
-
-mysql> create user dvwa@localhost identified by 'p@ssw0rd';
-Query OK, 0 rows affected (0.01 sec)
-
-mysql> grant all on dvwa.* to dvwa@localhost;
-Query OK, 0 rows affected (0.01 sec)
-
-mysql> flush privileges;
-Query OK, 0 rows affected (0.00 sec)
-```
 
 ### Other Configuration
 

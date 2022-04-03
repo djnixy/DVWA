@@ -45,18 +45,18 @@ echo \
 apt-get update
 apt-get -y install docker-ce docker-ce-cli containerd.io
 
-##Run mariaDB docker container:
+### Run mariaDB docker container:
 
 docker run -itd --rm --name dvwadb -e MARIADB_DATABASE=dvwa -e MARIADB_USER=dvwa -e MARIADB_PASSWORD=p@ssw0rd -e MARIADB_ROOT_PASSWORD=p@ssw0rd -v "dvwadb-data:/var/lib/mysql" -p 3306:3306 mariadb:latest
 
-##Deploy app to apache web server:
+### Deploy app to apache web server:
 
 git clone https://github.com/djnixy/DVWA
 rm -r /var/www/html/index.html
 rsync -avP DVWA/ /var/www/html/
 
-###
 
+- - -
 
 ### Other Configuration
 

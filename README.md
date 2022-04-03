@@ -36,24 +36,29 @@ along with Damn Vulnerable Web Application (DVWA).  If not, see <https://www.gnu
 - - -
 
 ### Quick install ###
+```
 apt-get update && apt-get -y install apache2 php php-mysqli php-gd libapache2-mod-php ca-certificates curl gnupg lsb-release
 curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo gpg --dearmor -o /usr/share/keyrings/docker-archive-keyring.gpg
 echo \
   "deb [arch=$(dpkg --print-architecture) signed-by=/usr/share/keyrings/docker-archive-keyring.gpg] https://download.docker.com/linux/ubuntu \
   $(lsb_release -cs) stable" | sudo tee /etc/apt/sources.list.d/docker.list > /dev/null
 
-apt-get update
-apt-get -y install docker-ce docker-ce-cli containerd.io
+apt-get update && apt-get -y install docker-ce docker-ce-cli containerd.io
+```
 
 ### Run mariaDB docker container:
 
+```
 docker run -itd --rm --name dvwadb -e MARIADB_DATABASE=dvwa -e MARIADB_USER=dvwa -e MARIADB_PASSWORD=p@ssw0rd -e MARIADB_ROOT_PASSWORD=p@ssw0rd -v "dvwadb-data:/var/lib/mysql" -p 3306:3306 mariadb:latest
+```
 
 ### Deploy app to apache web server:
 
+```
 git clone https://github.com/djnixy/DVWA
 rm -r /var/www/html/index.html
 rsync -avP DVWA/ /var/www/html/
+```
 
 
 - - -
